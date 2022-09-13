@@ -8,9 +8,9 @@ factor = "路線"
 ########################
 
 font_manager.fontManager.addfont("./fonts/ipaexg.ttf")
-matplotlib.rc('font', family="IPAexGothic")
+matplotlib.rc("font", family="IPAexGothic")
 
-df = pd.read_csv("./data/yokohama_kawasaki.csv", encoding='utf-8')
+df = pd.read_csv("./data/yokohama_kawasaki.csv", encoding="utf-8")
 df_count = df[factor].value_counts()
 
 fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
@@ -23,4 +23,9 @@ title = plt.title(f"{factor}別物件数")
 fig.subplots_adjust(wspace=0.1, top=0.96)
 # fig.patch.set_alpha(0)  # 余白を透明にする場合
 # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
-plt.savefig("./graph/{}.png".format(f"{factor}別物件数"), bbox_inches='tight', pad_inches=0.1, dpi=200)
+plt.savefig(
+    "./graph/{}.png".format(f"{factor}別物件数"),
+    bbox_inches="tight",
+    pad_inches=0.1,
+    dpi=200,
+)
