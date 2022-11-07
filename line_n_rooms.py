@@ -3,6 +3,14 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 
+"""
+名称、カテゴリー、アドレス、アクセス
+路線、駅、バス停、
+乗換時間、バス、徒歩、車、合計時間（分）
+築年数、構造、階数、
+家賃、管理費、敷金、礼金（万円）
+間取り、面積、URL
+"""
 ########################
 factor = "路線"
 ########################
