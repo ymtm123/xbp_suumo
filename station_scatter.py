@@ -23,9 +23,10 @@ matplotlib.rc("font", family="IPAexGothic")
 
 # データの読み込み
 df = pd.read_csv("./data/yokohama_kawasaki.csv", encoding="utf-8")
+
+# ある路線の指定された列における駅ごとの各項目の平均値の取得
 df = df[df["路線"].isin(targets)]
 df_group = df.groupby(["駅"]).mean()
-
 X = df_group.loc[:, factor_1]
 Y = df_group.loc[:, factor_2]
 T = df_group.index
