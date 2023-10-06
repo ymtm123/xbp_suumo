@@ -1,0 +1,180 @@
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
+
+
+# 日本語の設定
+font_manager.fontManager.addfont("./fonts/ipaexg.ttf")
+matplotlib.rc("font", family="IPAexGothic")
+
+
+def n_rooms(df, factor):
+    # 指定された列のカウント取得
+    df_count = df[factor].value_counts()
+
+    # グラフのサイズなどの指定
+    fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+
+    # 棒グラフの表示
+    ax.bar(df_count.index, df_count.values)
+    xlabels = plt.xticks(rotation=90)
+    title = plt.title(f"{factor}別物件数")
+
+    # グラフの調整
+    fig.subplots_adjust(wspace=0.1, top=0.96)
+    # fig.patch.set_alpha(0)  # 余白を透明にする場合
+    # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+    # グラフの保存
+    plt.savefig(
+        "./graph/{}.png".format(f"{factor}別物件数"),
+        bbox_inches="tight",
+        pad_inches=0.1,
+        dpi=200,
+    )
+
+
+def ranking_bar(df, factor_1, factor_2):
+    # 指定された列における各項目の平均値の取得
+    df_group = df.groupby([factor_1]).mean().sort_values(factor_2, ascending=False)
+
+    # グラフのサイズなどの指定
+    fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+
+    # 棒グラフの表示
+    ax.bar(df_group.index, df_group[factor_2])
+
+    # グラフの調整
+    xlabels = plt.xticks(rotation=90)
+    title = plt.title(f"{factor_1}別の平均{factor_2}")
+    fig.subplots_adjust(wspace=0.1, top=0.96)
+    # fig.patch.set_alpha(0)  # 余白を透明にする場合
+    # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+    # グラフの保存
+    plt.savefig(
+        "./graph/{}.png".format(f"{factor_1}別の平均{factor_2}"),
+        bbox_inches="tight",
+        pad_inches=0.1,
+        dpi=200,
+    )
+
+
+def scatter_line(df, factor_1, factor_2):
+    # 指定された列における駅ごとの各項目の平均値の取得
+    df_group = df.groupby(["路線"]).mean()
+    X = df_group.loc[:, factor_1]
+    Y = df_group.loc[:, factor_2]
+    T = df_group.index
+
+    # グラフのサイズなどの指定
+    fig, ax = plt.subplots(figsize=(6.4, 4.8), nrows=1, ncols=1)
+
+    # 散布図の表示
+    ax.scatter(X, Y)
+
+    # グラフの調整
+    ax.set_xlabel(factor_1)
+    ax.set_ylabel(factor_2)
+    for x, y, t in zip(X, Y, T):
+        ax.annotate(t, xy=(x, y), size=10)
+    plt.title(f"{factor_1}と{factor_2}")
+    fig.subplots_adjust(wspace=0.1, top=0.96)
+    # fig.patch.set_alpha(0)  # 余白を透明にする場合
+    # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+    # グラフの保存
+    plt.savefig(
+        "./graph/{}.png".format(f"{factor_1}と{factor_2}"),
+        bbox_inches="tight",
+        pad_inches=0.1,
+        dpi=200,
+    )
+
+
+def n_rooms_by_line(df, targets, factor):
+    # ある路線の指定された列のカウント取得
+    df = df[df["路線"].isin(targets)]
+    df_count = df[factor].value_counts()
+
+    # グラフのサイズなどの指定
+    fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+
+    # 棒グラフの表示
+    ax.bar(df_count.index, df_count.values)
+
+    # グラフの調整
+    xlabels = plt.xticks(rotation=90)
+    title = plt.title("と".join(targets) + f"の{factor}別物件数")
+    fig.subplots_adjust(wspace=0.1, top=0.96)
+    # fig.patch.set_alpha(0)  # 余白を透明にする場合
+    # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+    # グラフの保存
+    plt.savefig(
+        "./graph/{}.png".format("と".join(targets) + f"の{factor}別物件数"),
+        bbox_inches="tight",
+        pad_inches=0.1,
+        dpi=200,
+    )
+
+
+def ranking_bar_by_line(df, targets, factor_1, factor_2):
+    # ある路線の指定された列における各項目の平均値の取得
+    df = df[df["路線"].isin(targets)]
+    df_group = df.groupby([factor_1]).mean().sort_values(factor_2, ascending=False)
+
+    # グラフのサイズなどの指定
+    fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+
+    # 棒グラフの表示
+    ax.bar(df_group.index, df_group[factor_2])
+
+    # グラフの調整
+    xlabels = plt.xticks(rotation=90)
+    title = plt.title("と".join(targets) + f"の{factor_1}別の平均{factor_2}")
+    fig.subplots_adjust(wspace=0.1, top=0.96)
+    # fig.patch.set_alpha(0)  # 余白を透明にする場合
+    # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+    # グラフの保存
+    plt.savefig(
+        "./graph/{}.png".format("と".join(targets) + f"の{factor_1}別の平均{factor_2}"),
+        bbox_inches="tight",
+        pad_inches=0.1,
+        dpi=200,
+    )
+
+
+def scatter_station(df, targets, factor_1, factor_2):
+    # ある路線の指定された列における駅ごとの各項目の平均値の取得
+    df = df[df["路線"].isin(targets)]
+    df_group = df.groupby(["駅"]).mean()
+    X = df_group.loc[:, factor_1]
+    Y = df_group.loc[:, factor_2]
+    T = df_group.index
+
+    # グラフのサイズなどの指定
+    fig, ax = plt.subplots(figsize=(6.4, 4.8), nrows=1, ncols=1)
+
+    # 散布図の表示
+    ax.scatter(X, Y)
+
+    # グラフの調整
+    ax.set_xlabel(factor_1)
+    ax.set_ylabel(factor_2)
+    for x, y, t in zip(X, Y, T):
+        ax.annotate(t, xy=(x, y), size=10)
+    plt.title("と".join(targets) + f"の{factor_1}と{factor_2}")
+    fig.subplots_adjust(wspace=0.1, top=0.96)
+    # fig.patch.set_alpha(0)  # 余白を透明にする場合
+    # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+    # グラフの保存
+    plt.savefig(
+        "./graph/{}.png".format("と".join(targets) + f"の{factor_1}と{factor_2}"),
+        bbox_inches="tight",
+        pad_inches=0.1,
+        dpi=200,
+    )
