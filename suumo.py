@@ -10,12 +10,12 @@ class SuumoDataFrame(pd.DataFrame):
     font_manager.fontManager.addfont("./fonts/ipaexg.ttf")
     matplotlib.rc("font", family="IPAexGothic")
 
-    def n_rooms(self, factor):
+    def n_rooms(self, factor, graph_width=12, graph_height=3):
         # 指定された列のカウント取得
         df_count = self[factor].value_counts()
 
         # グラフのサイズなどの指定
-        fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
         ax.bar(df_count.index, df_count.values)
@@ -35,12 +35,12 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def ranking_bar(self, factor_1, factor_2):
+    def ranking_bar(self, factor_1, factor_2, graph_width=12, graph_height=3):
         # 指定された列における各項目の平均値の取得
         df_group = self.groupby([factor_1]).mean().sort_values(factor_2, ascending=False)
 
         # グラフのサイズなどの指定
-        fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
         ax.bar(df_group.index, df_group[factor_2])
@@ -60,7 +60,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def scatter_line(self, factor_1, factor_2):
+    def scatter_line(self, factor_1, factor_2, graph_width=6.4, graph_height=4.8):
         # 指定された列における駅ごとの各項目の平均値の取得
         df_group = self.groupby(["路線"]).mean()
         X = df_group.loc[:, factor_1]
@@ -68,7 +68,7 @@ class SuumoDataFrame(pd.DataFrame):
         T = df_group.index
 
         # グラフのサイズなどの指定
-        fig, ax = plt.subplots(figsize=(6.4, 4.8), nrows=1, ncols=1)
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 散布図の表示
         ax.scatter(X, Y)
@@ -91,13 +91,13 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def n_rooms_by_line(self, targets, factor):
+    def n_rooms_by_line(self, targets, factor, graph_width=12, graph_height=3):
         # ある路線の指定された列のカウント取得
         df = self[self["路線"].isin(targets)]
         df_count = df[factor].value_counts()
 
         # グラフのサイズなどの指定
-        fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
         ax.bar(df_count.index, df_count.values)
@@ -117,13 +117,13 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def ranking_bar_by_line(self, targets, factor_1, factor_2):
+    def ranking_bar_by_line(self, targets, factor_1, factor_2, graph_width=12, graph_height=3):
         # ある路線の指定された列における各項目の平均値の取得
         df = self[self["路線"].isin(targets)]
         df_group = df.groupby([factor_1]).mean().sort_values(factor_2, ascending=False)
 
         # グラフのサイズなどの指定
-        fig, ax = plt.subplots(figsize=(12, 3), nrows=1, ncols=1)
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
         ax.bar(df_group.index, df_group[factor_2])
@@ -143,7 +143,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def scatter_station(self, targets, factor_1, factor_2):
+    def scatter_station(self, targets, factor_1, factor_2, graph_width=6.4, graph_height=4.8):
         # ある路線の指定された列における駅ごとの各項目の平均値の取得
         df = self[self["路線"].isin(targets)]
         df_group = df.groupby(["駅"]).mean()
@@ -152,7 +152,7 @@ class SuumoDataFrame(pd.DataFrame):
         T = df_group.index
 
         # グラフのサイズなどの指定
-        fig, ax = plt.subplots(figsize=(6.4, 4.8), nrows=1, ncols=1)
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 散布図の表示
         ax.scatter(X, Y)
