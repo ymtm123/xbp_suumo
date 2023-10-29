@@ -19,8 +19,8 @@ class SuumoDataFrame(pd.DataFrame):
 
         # 棒グラフの表示
         ax.bar(df_count.index, df_count.values)
-        xlabels = plt.xticks(rotation=90)
-        title = plt.title(f"{factor}別物件数")
+        _ = plt.xticks(rotation=90)
+        _ = plt.title(f"{factor}別物件数")
 
         # グラフの調整
         fig.subplots_adjust(wspace=0.1, top=0.96)
@@ -46,8 +46,8 @@ class SuumoDataFrame(pd.DataFrame):
         ax.bar(df_group.index, df_group[factor_2])
 
         # グラフの調整
-        xlabels = plt.xticks(rotation=90)
-        title = plt.title(f"{factor_1}別の平均{factor_2}")
+        _ = plt.xticks(rotation=90)
+        _ = plt.title(f"{factor_1}別の平均{factor_2}")
         fig.subplots_adjust(wspace=0.1, top=0.96)
         # fig.patch.set_alpha(0)  # 余白を透明にする場合
         # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
@@ -109,8 +109,8 @@ class SuumoDataFrame(pd.DataFrame):
         ax.bar(df_count.index, df_count.values)
 
         # グラフの調整
-        xlabels = plt.xticks(rotation=90)
-        title = plt.title("と".join(targets) + f"の{factor}別物件数")
+        _ = plt.xticks(rotation=90)
+        _ = plt.title("と".join(targets) + f"の{factor}別物件数")
         fig.subplots_adjust(wspace=0.1, top=0.96)
         # fig.patch.set_alpha(0)  # 余白を透明にする場合
         # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
@@ -135,8 +135,8 @@ class SuumoDataFrame(pd.DataFrame):
         ax.bar(df_group.index, df_group[factor_2])
 
         # グラフの調整
-        xlabels = plt.xticks(rotation=90)
-        title = plt.title("と".join(targets) + f"の{factor_1}別の平均{factor_2}")
+        _ = plt.xticks(rotation=90)
+        _ = plt.title("と".join(targets) + f"の{factor_1}別の平均{factor_2}")
         fig.subplots_adjust(wspace=0.1, top=0.96)
         # fig.patch.set_alpha(0)  # 余白を透明にする場合
         # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
