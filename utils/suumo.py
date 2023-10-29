@@ -60,7 +60,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def scatter_line(self, factor_1, factor_2, graph_width=6.4, graph_height=4.8):
+    def scatter_line(self, factor_1, factor_2, graph_width=6.4, graph_height=4.8, xlim=None, ylim=None):
         # 指定された列における駅ごとの各項目の平均値の取得
         df_group = self.groupby(["路線"]).mean()
         X = df_group.loc[:, factor_1]
@@ -72,6 +72,12 @@ class SuumoDataFrame(pd.DataFrame):
 
         # 散布図の表示
         ax.scatter(X, Y)
+
+        # グラフの軸の調整
+        if xlim is not None:
+            ax.set_xlim(xlim)
+        if ylim is not None:
+            ax.set_ylim(ylim)
 
         # グラフの調整
         ax.set_xlabel(factor_1)
@@ -143,7 +149,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def scatter_station(self, targets, factor_1, factor_2, graph_width=6.4, graph_height=4.8):
+    def scatter_station(self, targets, factor_1, factor_2, graph_width=6.4, graph_height=4.8, xlim=None, ylim=None):
         # ある路線の指定された列における駅ごとの各項目の平均値の取得
         df = self[self["路線"].isin(targets)]
         df_group = df.groupby(["駅"]).mean()
@@ -156,6 +162,12 @@ class SuumoDataFrame(pd.DataFrame):
 
         # 散布図の表示
         ax.scatter(X, Y)
+
+        # グラフの軸の調整
+        if xlim is not None:
+            ax.set_xlim(xlim)
+        if ylim is not None:
+            ax.set_ylim(ylim)
 
         # グラフの調整
         ax.set_xlabel(factor_1)
