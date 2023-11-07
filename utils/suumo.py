@@ -35,7 +35,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def ranking_bar(self, factor_1, factor_2, graph_width=12, graph_height=3):
+    def average_bar(self, factor_1, factor_2, graph_width=12, graph_height=3):
         numeric_df = self.select_dtypes(include='number')  # 数値の列のみを抽出
 
         # 指定された列における各項目の平均値の取得
@@ -129,7 +129,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def ranking_bar_by_line(self, targets, factor_1, factor_2, graph_width=12, graph_height=3):
+    def average_bar_by_line(self, targets, factor_1, factor_2, graph_width=12, graph_height=3):
         # ある路線の指定された列における各項目の平均値の取得
         df = self[self["路線"].isin(targets)]
         numeric_df = self.select_dtypes(include='number')  # 数値の列のみを抽出
