@@ -197,6 +197,46 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
+    def average_bar_by_anything(self, target_dict, factor_1, factor_2, graph_width=12, graph_height=3):
+        # 指定された項目の指定された列における各項目の平均値の取得
+
+        # target_dictの各keyにおけるvaluesのいずれかを含む行のみを抽出
+        conditions = pd.Series(True, index=self.index)  # 初期条件をTrueに設定
+        for key, values in target_dict.items():
+            conditions = conditions & self[key].isin(values)
+
+        df = self[conditions]
+
+        numeric_df = self.select_dtypes(include='number')  # 数値の列のみを抽出
+        # df_group = df.groupby([factor_1]).mean().sort_values(factor_2, ascending=False)
+        df_group = numeric_df.groupby(df[factor_1]).mean().sort_values(factor_2, ascending=False)
+
+        # グラフのサイズなどの指定
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
+
+        # 棒グラフの表示
+        ax.bar(df_group.index, df_group[factor_2])
+
+        # グラフの調整
+        _ = plt.xticks(rotation=90)
+        title = ""
+        for key, values in target_dict.items():
+            title = title + "と".join(values) + "の"
+        title = title + f"{factor_1}別の平均{factor_2}"
+
+        _ = plt.title(title)
+        fig.subplots_adjust(wspace=0.1, top=0.96)
+        # fig.patch.set_alpha(0)  # 余白を透明にする場合
+        # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+        # グラフの保存
+        plt.savefig(
+            f"./graph/{title}.png",
+            bbox_inches="tight",
+            pad_inches=0.1,
+            dpi=200,
+        )
+
 
 def read_csv(*args, **kwargs):
     df = pd.read_csv(*args, **kwargs)  # pandasのread_csvを使ってDataFrameを取得
