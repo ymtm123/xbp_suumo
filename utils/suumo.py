@@ -219,12 +219,156 @@ class SuumoDataFrame(pd.DataFrame):
 
         # グラフの調整
         _ = plt.xticks(rotation=90)
+
         title = ""
         for key, values in target_dict.items():
             title = title + "と".join(values) + "の"
         title = title + f"{factor_1}別の平均{factor_2}"
-
         _ = plt.title(title)
+
+        fig.subplots_adjust(wspace=0.1, top=0.96)
+        # fig.patch.set_alpha(0)  # 余白を透明にする場合
+        # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+        # グラフの保存
+        plt.savefig(
+            f"./graph/{title}.png",
+            bbox_inches="tight",
+            pad_inches=0.1,
+            dpi=200,
+        )
+
+
+    def n_rooms_by_anything(self, target_dict, factor, graph_width=12, graph_height=3):
+        # ある条件の指定された列のカウント取得
+
+        # target_dictの各keyにおけるvaluesのいずれかを含む行のみを抽出
+        conditions = pd.Series(True, index=self.index)  # 初期条件をTrueに設定
+        for key, values in target_dict.items():
+            conditions = conditions & self[key].isin(values)
+
+        df = self[conditions]
+        df_count = df[factor].value_counts()
+
+        # グラフのサイズなどの指定
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
+
+        # 棒グラフの表示
+        ax.bar(df_count.index, df_count.values)
+
+        # グラフの調整
+        _ = plt.xticks(rotation=90)
+
+        title = ""
+        for key, values in target_dict.items():
+            title = title + "と".join(values) + "の"
+        title = title + f"{factor}別物件数"
+        _ = plt.title(title)
+
+        fig.subplots_adjust(wspace=0.1, top=0.96)
+        # fig.patch.set_alpha(0)  # 余白を透明にする場合
+        # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+        # グラフの保存
+        plt.savefig(
+            f"./graph/{title}.png",
+            bbox_inches="tight",
+            pad_inches=0.1,
+            dpi=200,
+        )
+
+
+    def scatter_line_by_anything(self, target_dict, factor_1, factor_2, graph_width=6.4, graph_height=4.8, xlim=None, ylim=None):
+        # target_dictの各keyにおけるvaluesのいずれかを含む行のみを抽出
+        conditions = pd.Series(True, index=self.index)  # 初期条件をTrueに設定
+        for key, values in target_dict.items():
+            conditions = conditions & self[key].isin(values)
+        df = self[conditions]
+
+        numeric_df = self.select_dtypes(include='number')  # 数値の列のみを抽出
+
+        # 指定された列における駅ごとの各項目の平均値の取得
+        # df_group = self.groupby(["路線"]).mean()
+        df_group = numeric_df.groupby(df["路線"]).mean()
+        X = df_group.loc[:, factor_1]
+        Y = df_group.loc[:, factor_2]
+        T = df_group.index
+
+        # グラフのサイズなどの指定
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
+
+        # 散布図の表示
+        ax.scatter(X, Y)
+
+        # グラフの軸の調整
+        if xlim is not None:
+            ax.set_xlim(xlim)
+        if ylim is not None:
+            ax.set_ylim(ylim)
+
+        # グラフの調整
+        ax.set_xlabel(factor_1)
+        ax.set_ylabel(factor_2)
+        for x, y, t in zip(X, Y, T):
+            ax.annotate(t, xy=(x, y), size=10)
+
+        title = ""
+        for key, values in target_dict.items():
+            title = title + "と".join(values) + "の"
+        title = title + f"{factor_1}と{factor_2}"
+        _ = plt.title(title)
+
+        fig.subplots_adjust(wspace=0.1, top=0.96)
+        # fig.patch.set_alpha(0)  # 余白を透明にする場合
+        # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
+
+        # グラフの保存
+        plt.savefig(
+            f"./graph/{title}.png",
+            bbox_inches="tight",
+            pad_inches=0.1,
+            dpi=200,
+        )
+
+    def scatter_station_by_anything(self, target_dict, factor_1, factor_2, graph_width=6.4, graph_height=4.8, xlim=None, ylim=None):
+        # 指定された条件における駅ごとの各項目の平均値の取得
+        # target_dictの各keyにおけるvaluesのいずれかを含む行のみを抽出
+        conditions = pd.Series(True, index=self.index)  # 初期条件をTrueに設定
+        for key, values in target_dict.items():
+            conditions = conditions & self[key].isin(values)
+        df = self[conditions]
+
+        numeric_df = self.select_dtypes(include='number')
+        # df_group = df.groupby(["駅"]).mean()
+        df_group = numeric_df.groupby(df["駅"]).mean()
+        X = df_group.loc[:, factor_1]
+        Y = df_group.loc[:, factor_2]
+        T = df_group.index
+
+        # グラフのサイズなどの指定
+        fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
+
+        # 散布図の表示
+        ax.scatter(X, Y)
+
+        # グラフの軸の調整
+        if xlim is not None:
+            ax.set_xlim(xlim)
+        if ylim is not None:
+            ax.set_ylim(ylim)
+
+        # グラフの調整
+        ax.set_xlabel(factor_1)
+        ax.set_ylabel(factor_2)
+        for x, y, t in zip(X, Y, T):
+            ax.annotate(t, xy=(x, y), size=10)
+
+        title = ""
+        for key, values in target_dict.items():
+            title = title + "と".join(values) + "の"
+        title = title + f"{factor_1}と{factor_2}"
+        _ = plt.title(title)
+
         fig.subplots_adjust(wspace=0.1, top=0.96)
         # fig.patch.set_alpha(0)  # 余白を透明にする場合
         # ax.patch.set_alpha(0)  # プロット部分を透明にする場合
