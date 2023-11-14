@@ -35,7 +35,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def average_bar(self, factor_1, factor_2, graph_width=12, graph_height=3):
+    def average_bar(self, factor_1, factor_2, n_top=0, graph_width=12, graph_height=3):
         numeric_df = self.select_dtypes(include='number')  # 数値の列のみを抽出
 
         # 指定された列における各項目の平均値の取得
@@ -46,7 +46,10 @@ class SuumoDataFrame(pd.DataFrame):
         fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
-        ax.bar(df_group.index, df_group[factor_2])
+        if n_top > 0:
+            ax.bar(df_group.index[:n_top], df_group[factor_2][:n_top])
+        else:
+            ax.bar(df_group.index, df_group[factor_2])
 
         # グラフの調整
         _ = plt.xticks(rotation=90)
@@ -129,7 +132,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def average_bar_by_line(self, targets, factor_1, factor_2, graph_width=12, graph_height=3):
+    def average_bar_by_line(self, targets, factor_1, factor_2, n_top=0, graph_width=12, graph_height=3):
         # ある路線の指定された列における各項目の平均値の取得
         df = self[self["路線"].isin(targets)]
         numeric_df = self.select_dtypes(include='number')  # 数値の列のみを抽出
@@ -140,7 +143,10 @@ class SuumoDataFrame(pd.DataFrame):
         fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
-        ax.bar(df_group.index, df_group[factor_2])
+        if n_top > 0:
+            ax.bar(df_group.index[:n_top], df_group[factor_2][:n_top])
+        else:
+            ax.bar(df_group.index, df_group[factor_2])
 
         # グラフの調整
         _ = plt.xticks(rotation=90)
@@ -197,7 +203,7 @@ class SuumoDataFrame(pd.DataFrame):
             dpi=200,
         )
 
-    def average_bar_by_anything(self, target_dict, factor_1, factor_2, graph_width=12, graph_height=3):
+    def average_bar_by_anything(self, target_dict, factor_1, factor_2, n_top=0, graph_width=12, graph_height=3):
         # 指定された項目の指定された列における各項目の平均値の取得
 
         # target_dictの各keyにおけるvaluesのいずれかを含む行のみを抽出
@@ -215,7 +221,10 @@ class SuumoDataFrame(pd.DataFrame):
         fig, ax = plt.subplots(figsize=(graph_width, graph_height), nrows=1, ncols=1)
 
         # 棒グラフの表示
-        ax.bar(df_group.index, df_group[factor_2])
+        if n_top > 0:
+            ax.bar(df_group.index[:n_top], df_group[factor_2][:n_top])
+        else:
+            ax.bar(df_group.index, df_group[factor_2])
 
         # グラフの調整
         _ = plt.xticks(rotation=90)
