@@ -25,7 +25,7 @@ df.n_rooms_by_anything({
                         "駅")
 
 # df.average_bar("駅", "家賃")
-df.average_bar_by_line(["ＪＲ南武線", "東急東横線"], "駅", "家賃")
+# df.average_bar_by_line(["ＪＲ南武線", "東急東横線"], "駅", "家賃")
 df.average_bar_by_anything({
                             "路線": ["ＪＲ南武線", "東急東横線"],
                             "カテゴリー": ["賃貸マンション"],
@@ -47,3 +47,4 @@ df.scatter_station_by_anything({
                                 "間取り": ["ワンルーム", "1K"],
                                 },
                                 "面積", "家賃")
+
